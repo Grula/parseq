@@ -30,6 +30,9 @@ from strhub.data.module import SceneTextDataModule
 from strhub.models.base import BaseSystem
 from strhub.models.utils import get_pretrained_weights
 
+#CUSTOM import
+from strhub.models.utils import load_from_checkpoint
+
 
 @hydra.main(config_path='configs', config_name='main', version_base='1.2')
 def main(config: DictConfig):
@@ -61,6 +64,8 @@ def main(config: DictConfig):
     if config.pretrained is not None:
         model.load_state_dict(get_pretrained_weights(config.pretrained))
     print(summarize(model, max_depth=1 if model.hparams.name.startswith('parseq') else 2))
+
+    
 
     datamodule: SceneTextDataModule = hydra.utils.instantiate(config.data)
 
