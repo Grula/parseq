@@ -154,3 +154,4 @@ model*
 *demo_images*
 
 *.onnx 
+weights/
