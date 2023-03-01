@@ -74,7 +74,7 @@ def main(config: DictConfig):
     swa = StochasticWeightAveraging(swa_epoch_start=0.75, swa_lrs =[0.05, 0.01, 0.005, 0.001])
     cwd = HydraConfig.get().runtime.output_dir if config.ckpt_path is None else \
         str(Path(config.ckpt_path).parents[1].absolute())
-    trainer: Trainer = hydra.utils.instantiate(config.trainer, logger=TensorBoardLogger(cwd, '', '.'),
+    trainer: Trainer = hydra.utils.instantiate(config.trainer, logger=None,
                                                strategy=trainer_strategy, enable_model_summary=False,
                                                callbacks=[checkpoint, swa])
     trainer.fit(model, datamodule=datamodule, ckpt_path=config.ckpt_path)
