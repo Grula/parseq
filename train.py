@@ -73,7 +73,6 @@ def main(config: DictConfig):
     if config.pretrained is not None:
         model.load_state_dict(get_pretrained_weights(config.pretrained, model.state_dict()),strict=False)
     print(summarize(model, max_depth=1 if model.hparams.name.startswith('parseq') else 2))
-    exit()
 
     
 
