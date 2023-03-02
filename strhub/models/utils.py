@@ -74,12 +74,20 @@ def get_pretrained_weights(experiment, new_state_dict=None):
             if new_state_dict[key].shape == value.shape:
                 new_state_dict[key] = value
             else:
-                print(f'Skipped loading parameter {key} due to mismatch in shape')
-                # original_shape = pretrained_state_dict[key].shape
-                # if value.shape[0] > original_shape[0]:
-                #     new_state_dict[key][:value.shape[0], ...] = value.data
-                # else:
-                #     new_state_dict[key].data[:value.shape[0], ...] = value.data
+                original_shape = pretrained_state_dict[key].shape
+                new_shape  = new_state_dict[key].shape
+                if new_state_dict[key].shape < pretrained_state_dict[key].shape:
+                    continue
+                else:
+                    print(f'Loading {key} with shape {original_shape} into {new_shape} (truncating)'
+                            f' due to mismatch in shape')
+                    if len (new_state_dict[key].shape) == 3:
+                        new_state_dict[key].data[:, :value.shape[1], :] = value.data
+                    elif len (new_state_dict[key].shape) == 2:
+                        new_state_dict[key].data[:value.shape[0], :] = value.data
+                    elif len (new_state_dict[key].shape) == 1:
+                        new_state_dict[key].data[:value.shape[0]] = value.data
+
         else:
             print(f'Skipped loading parameter {key} because it does not exist in new state dict')
 
