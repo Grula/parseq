@@ -61,11 +61,29 @@ def _get_model_class(key):
     return ModelClass
 
 
-def get_pretrained_weights(experiment):
+def get_pretrained_weights(experiment, new_state_dict=None):
     try:
         url = _WEIGHTS_URL[experiment]
     except KeyError:
         raise InvalidModelError("No pretrained weights found for '{}'".format(experiment)) from None
+    # Note:
+    pretrained_state_dict = torch.hub.load_state_dict_from_url(url=url, map_location='cpu', check_hash=True)
+    for key, value in pretrained_state_dict.items():
+        if key in new_state_dict:
+            # Check if shapes match
+            if new_state_dict[key].shape == value.shape:
+                new_state_dict[key] = value
+            else:
+                print(f'Skipped loading parameter {key} due to mismatch in shape')
+                # original_shape = pretrained_state_dict[key].shape
+                # if value.shape[0] > original_shape[0]:
+                #     new_state_dict[key][:value.shape[0], ...] = value.data
+                # else:
+                #     new_state_dict[key].data[:value.shape[0], ...] = value.data
+        else:
+            print(f'Skipped loading parameter {key} because it does not exist in new state dict')
+
+    return new_state_dict
     return torch.hub.load_state_dict_from_url(url=url, map_location='cpu', check_hash=True)
 
 

@@ -33,6 +33,15 @@ from strhub.models.utils import get_pretrained_weights
 #CUSTOM import
 from strhub.models.utils import load_from_checkpoint
 
+def pprint(string):
+    if isinstance(string, dict):
+        for key, value in string.items():
+            print(key, ':', value)
+    elif isinstance(string, list):
+        for item in string:
+            print(item)
+    else:
+        print(string)
 
 @hydra.main(config_path='configs', config_name='main', version_base='1.2')
 def main(config: DictConfig):
@@ -62,8 +71,9 @@ def main(config: DictConfig):
     model: BaseSystem = hydra.utils.instantiate(config.model)
     # If specified, use pretrained weights to initialize the model
     if config.pretrained is not None:
-        model.load_state_dict(get_pretrained_weights(config.pretrained))
+        model.load_state_dict(get_pretrained_weights(config.pretrained, model.state_dict()),strict=False)
     print(summarize(model, max_depth=1 if model.hparams.name.startswith('parseq') else 2))
+    exit()
 
     
 
