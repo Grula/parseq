@@ -14,7 +14,7 @@ model:
   # For charset_test, ordering doesn't matter.
   # charset_test: "0123456789abcdefghijklmnopqrstuvwxyz"
   charset_test: "0123456789abcdefghijklmnopqrstuvwxyzçABCDEFGHIJKLMNOPQRSTUVWXYZÇ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~àèìòùáéíóúýâêîôûãñõäëïöüÿÀÈÌÒÙÁÉÍÓÚÝÂÊÎÔÛÃÑÕÄËÏÖÜŸ"
-  batch_size: 18
+  batch_size: 256
   weight_decay: 0.001
   warmup_pct: 0.075  # equivalent to 1.5 epochs of warm up
 
@@ -28,18 +28,18 @@ data:
   charset_train: ${model.charset_train}
   charset_test: ${model.charset_test}
   max_label_length: ${model.max_label_length}
-  remove_whitespace: false
+  remove_whitespace: true
   normalize_unicode: true
   augment: true
-  num_workers: 4
+  num_workers: 2
 
 trainer:
   _target_: pytorch_lightning.Trainer
   _convert_: all
-  # val_check_interval: 1000
-  val_check_interval: 1
+  val_check_interval: 1000
+  #val_check_interval: 1
   #max_steps: 169680  # 20 epochs x 8484 steps (for batch size = 384, real data)
-  max_epochs: 20
+  max_epochs: 2
   gradient_clip_val: 20
   gpus: 1
   # gpus: 0

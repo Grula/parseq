@@ -81,6 +81,7 @@ def get_pretrained_weights(experiment, new_state_dict=None):
                 else:
                     print(f'Loading {key} with shape {original_shape} into {new_shape} (truncating)'
                             f' due to mismatch in shape')
+                    # HACK: This is a hack to load the pretrained weights into the new model.
                     if len (new_state_dict[key].shape) == 3:
                         new_state_dict[key].data[:, :value.shape[1], :] = value.data
                     elif len (new_state_dict[key].shape) == 2:
