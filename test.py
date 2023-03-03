@@ -117,8 +117,8 @@ def main():
         results[name] = Result(name, total, accuracy, mean_ned, mean_conf, mean_label_length)
 
     result_groups = {
-        'Benchmark (Subset)': SceneTextDataModule.TEST_BENCHMARK_SUB,
-        'Benchmark': SceneTextDataModule.TEST_BENCHMARK
+        # 'Benchmark (Subset)': SceneTextDataModule.TEST_BENCHMARK_SUB,
+        'Benchmark':  ("DocBank", "FISCO", "synth")
     }
     if args.new:
         result_groups.update({'New': SceneTextDataModule.TEST_NEW})
