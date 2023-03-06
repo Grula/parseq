@@ -39,12 +39,12 @@ trainer:
   val_check_interval: 1000
   #val_check_interval: 1
   #max_steps: 169680  # 20 epochs x 8484 steps (for batch size = 384, real data)
-  max_epochs: 2
+  max_epochs: 1
   gradient_clip_val: 20
   gpus: 1
   # gpus: 0
 
-ckpt_path: null
+ckpt_path: 'last.ckpt'
 pretrained: parseq
 
 hydra:
