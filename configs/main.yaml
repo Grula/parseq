@@ -36,15 +36,15 @@ data:
 trainer:
   _target_: pytorch_lightning.Trainer
   _convert_: all
-  val_check_interval: 1000
+  val_check_interval: 5000
   #val_check_interval: 1
   #max_steps: 169680  # 20 epochs x 8484 steps (for batch size = 384, real data)
-  max_epochs: 1
+  max_epochs: 2
   gradient_clip_val: 20
   gpus: 1
   # gpus: 0
 
-ckpt_path: 'last.ckpt'
+ckpt_path: null
 pretrained: parseq
 
 hydra:
